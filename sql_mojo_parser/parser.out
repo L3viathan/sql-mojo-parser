@@ -1,0 +1,549 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Grammar
+
+Rule 0     S' -> statement
+Rule 1     empty -> <empty>
+Rule 2     statement -> select postpositions
+Rule 3     postpositions -> LIMIT NUMBER postpositions
+Rule 4     postpositions -> ORDER BY colspec postpositions
+Rule 5     postpositions -> empty
+Rule 6     select -> SELECT colspec FROM NAME condition
+Rule 7     colspec -> STAR
+Rule 8     colspec -> NAME colspec
+Rule 9     colspec -> funcapp colspec
+Rule 10    colspec -> empty
+Rule 11    condition -> WHERE expression
+Rule 12    condition -> empty
+Rule 13    funcapp -> NAME LPAREN NAME RPAREN
+Rule 14    expression -> value
+Rule 15    expression -> expression AND expression
+Rule 16    expression -> expression OR expression
+Rule 17    expression -> expression EQUALS expression
+Rule 18    value -> NUMBER
+Rule 19    value -> STRING
+Rule 20    value -> NAME
+
+Terminals, with rules where they appear
+
+AND                  : 15
+BY                   : 4
+EQUALS               : 17
+FROM                 : 6
+LIMIT                : 3
+LPAREN               : 13
+NAME                 : 6 8 13 13 20
+NUMBER               : 3 18
+OR                   : 16
+ORDER                : 4
+RPAREN               : 13
+SELECT               : 6
+STAR                 : 7
+STRING               : 19
+WHERE                : 11
+error                : 
+
+Nonterminals, with rules where they appear
+
+colspec              : 4 6 8 9
+condition            : 6
+empty                : 5 10 12
+expression           : 11 15 15 16 16 17 17
+funcapp              : 9
+postpositions        : 2 3 4
+select               : 2
+statement            : 0
+value                : 14
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . statement
+    (2) statement -> . select postpositions
+    (6) select -> . SELECT colspec FROM NAME condition
+
+    SELECT          shift and go to state 3
+
+    statement                      shift and go to state 1
+    select                         shift and go to state 2
+
+state 1
+
+    (0) S' -> statement .
+
+
+
+state 2
+
+    (2) statement -> select . postpositions
+    (3) postpositions -> . LIMIT NUMBER postpositions
+    (4) postpositions -> . ORDER BY colspec postpositions
+    (5) postpositions -> . empty
+    (1) empty -> .
+
+    LIMIT           shift and go to state 5
+    ORDER           shift and go to state 6
+    $end            reduce using rule 1 (empty -> .)
+
+    postpositions                  shift and go to state 4
+    empty                          shift and go to state 7
+
+state 3
+
+    (6) select -> SELECT . colspec FROM NAME condition
+    (7) colspec -> . STAR
+    (8) colspec -> . NAME colspec
+    (9) colspec -> . funcapp colspec
+    (10) colspec -> . empty
+    (13) funcapp -> . NAME LPAREN NAME RPAREN
+    (1) empty -> .
+
+    STAR            shift and go to state 10
+    NAME            shift and go to state 9
+    FROM            reduce using rule 1 (empty -> .)
+
+    colspec                        shift and go to state 8
+    funcapp                        shift and go to state 11
+    empty                          shift and go to state 12
+
+state 4
+
+    (2) statement -> select postpositions .
+
+    $end            reduce using rule 2 (statement -> select postpositions .)
+
+
+state 5
+
+    (3) postpositions -> LIMIT . NUMBER postpositions
+
+    NUMBER          shift and go to state 13
+
+
+state 6
+
+    (4) postpositions -> ORDER . BY colspec postpositions
+
+    BY              shift and go to state 14
+
+
+state 7
+
+    (5) postpositions -> empty .
+
+    $end            reduce using rule 5 (postpositions -> empty .)
+
+
+state 8
+
+    (6) select -> SELECT colspec . FROM NAME condition
+
+    FROM            shift and go to state 15
+
+
+state 9
+
+    (8) colspec -> NAME . colspec
+    (13) funcapp -> NAME . LPAREN NAME RPAREN
+    (7) colspec -> . STAR
+    (8) colspec -> . NAME colspec
+    (9) colspec -> . funcapp colspec
+    (10) colspec -> . empty
+    (13) funcapp -> . NAME LPAREN NAME RPAREN
+    (1) empty -> .
+
+    LPAREN          shift and go to state 17
+    STAR            shift and go to state 10
+    NAME            shift and go to state 9
+    FROM            reduce using rule 1 (empty -> .)
+    LIMIT           reduce using rule 1 (empty -> .)
+    ORDER           reduce using rule 1 (empty -> .)
+    $end            reduce using rule 1 (empty -> .)
+
+    colspec                        shift and go to state 16
+    funcapp                        shift and go to state 11
+    empty                          shift and go to state 12
+
+state 10
+
+    (7) colspec -> STAR .
+
+    FROM            reduce using rule 7 (colspec -> STAR .)
+    LIMIT           reduce using rule 7 (colspec -> STAR .)
+    ORDER           reduce using rule 7 (colspec -> STAR .)
+    $end            reduce using rule 7 (colspec -> STAR .)
+
+
+state 11
+
+    (9) colspec -> funcapp . colspec
+    (7) colspec -> . STAR
+    (8) colspec -> . NAME colspec
+    (9) colspec -> . funcapp colspec
+    (10) colspec -> . empty
+    (13) funcapp -> . NAME LPAREN NAME RPAREN
+    (1) empty -> .
+
+    STAR            shift and go to state 10
+    NAME            shift and go to state 9
+    FROM            reduce using rule 1 (empty -> .)
+    LIMIT           reduce using rule 1 (empty -> .)
+    ORDER           reduce using rule 1 (empty -> .)
+    $end            reduce using rule 1 (empty -> .)
+
+    funcapp                        shift and go to state 11
+    colspec                        shift and go to state 18
+    empty                          shift and go to state 12
+
+state 12
+
+    (10) colspec -> empty .
+
+    FROM            reduce using rule 10 (colspec -> empty .)
+    LIMIT           reduce using rule 10 (colspec -> empty .)
+    ORDER           reduce using rule 10 (colspec -> empty .)
+    $end            reduce using rule 10 (colspec -> empty .)
+
+
+state 13
+
+    (3) postpositions -> LIMIT NUMBER . postpositions
+    (3) postpositions -> . LIMIT NUMBER postpositions
+    (4) postpositions -> . ORDER BY colspec postpositions
+    (5) postpositions -> . empty
+    (1) empty -> .
+
+    LIMIT           shift and go to state 5
+    ORDER           shift and go to state 6
+    $end            reduce using rule 1 (empty -> .)
+
+    postpositions                  shift and go to state 19
+    empty                          shift and go to state 7
+
+state 14
+
+    (4) postpositions -> ORDER BY . colspec postpositions
+    (7) colspec -> . STAR
+    (8) colspec -> . NAME colspec
+    (9) colspec -> . funcapp colspec
+    (10) colspec -> . empty
+    (13) funcapp -> . NAME LPAREN NAME RPAREN
+    (1) empty -> .
+
+    STAR            shift and go to state 10
+    NAME            shift and go to state 9
+    LIMIT           reduce using rule 1 (empty -> .)
+    ORDER           reduce using rule 1 (empty -> .)
+    $end            reduce using rule 1 (empty -> .)
+
+    colspec                        shift and go to state 20
+    funcapp                        shift and go to state 11
+    empty                          shift and go to state 12
+
+state 15
+
+    (6) select -> SELECT colspec FROM . NAME condition
+
+    NAME            shift and go to state 21
+
+
+state 16
+
+    (8) colspec -> NAME colspec .
+
+    FROM            reduce using rule 8 (colspec -> NAME colspec .)
+    LIMIT           reduce using rule 8 (colspec -> NAME colspec .)
+    ORDER           reduce using rule 8 (colspec -> NAME colspec .)
+    $end            reduce using rule 8 (colspec -> NAME colspec .)
+
+
+state 17
+
+    (13) funcapp -> NAME LPAREN . NAME RPAREN
+
+    NAME            shift and go to state 22
+
+
+state 18
+
+    (9) colspec -> funcapp colspec .
+
+    FROM            reduce using rule 9 (colspec -> funcapp colspec .)
+    LIMIT           reduce using rule 9 (colspec -> funcapp colspec .)
+    ORDER           reduce using rule 9 (colspec -> funcapp colspec .)
+    $end            reduce using rule 9 (colspec -> funcapp colspec .)
+
+
+state 19
+
+    (3) postpositions -> LIMIT NUMBER postpositions .
+
+    $end            reduce using rule 3 (postpositions -> LIMIT NUMBER postpositions .)
+
+
+state 20
+
+    (4) postpositions -> ORDER BY colspec . postpositions
+    (3) postpositions -> . LIMIT NUMBER postpositions
+    (4) postpositions -> . ORDER BY colspec postpositions
+    (5) postpositions -> . empty
+    (1) empty -> .
+
+    LIMIT           shift and go to state 5
+    ORDER           shift and go to state 6
+    $end            reduce using rule 1 (empty -> .)
+
+    postpositions                  shift and go to state 23
+    empty                          shift and go to state 7
+
+state 21
+
+    (6) select -> SELECT colspec FROM NAME . condition
+    (11) condition -> . WHERE expression
+    (12) condition -> . empty
+    (1) empty -> .
+
+    WHERE           shift and go to state 25
+    LIMIT           reduce using rule 1 (empty -> .)
+    ORDER           reduce using rule 1 (empty -> .)
+    $end            reduce using rule 1 (empty -> .)
+
+    condition                      shift and go to state 24
+    empty                          shift and go to state 26
+
+state 22
+
+    (13) funcapp -> NAME LPAREN NAME . RPAREN
+
+    RPAREN          shift and go to state 27
+
+
+state 23
+
+    (4) postpositions -> ORDER BY colspec postpositions .
+
+    $end            reduce using rule 4 (postpositions -> ORDER BY colspec postpositions .)
+
+
+state 24
+
+    (6) select -> SELECT colspec FROM NAME condition .
+
+    LIMIT           reduce using rule 6 (select -> SELECT colspec FROM NAME condition .)
+    ORDER           reduce using rule 6 (select -> SELECT colspec FROM NAME condition .)
+    $end            reduce using rule 6 (select -> SELECT colspec FROM NAME condition .)
+
+
+state 25
+
+    (11) condition -> WHERE . expression
+    (14) expression -> . value
+    (15) expression -> . expression AND expression
+    (16) expression -> . expression OR expression
+    (17) expression -> . expression EQUALS expression
+    (18) value -> . NUMBER
+    (19) value -> . STRING
+    (20) value -> . NAME
+
+    NUMBER          shift and go to state 30
+    STRING          shift and go to state 31
+    NAME            shift and go to state 32
+
+    expression                     shift and go to state 28
+    value                          shift and go to state 29
+
+state 26
+
+    (12) condition -> empty .
+
+    LIMIT           reduce using rule 12 (condition -> empty .)
+    ORDER           reduce using rule 12 (condition -> empty .)
+    $end            reduce using rule 12 (condition -> empty .)
+
+
+state 27
+
+    (13) funcapp -> NAME LPAREN NAME RPAREN .
+
+    STAR            reduce using rule 13 (funcapp -> NAME LPAREN NAME RPAREN .)
+    NAME            reduce using rule 13 (funcapp -> NAME LPAREN NAME RPAREN .)
+    FROM            reduce using rule 13 (funcapp -> NAME LPAREN NAME RPAREN .)
+    LIMIT           reduce using rule 13 (funcapp -> NAME LPAREN NAME RPAREN .)
+    ORDER           reduce using rule 13 (funcapp -> NAME LPAREN NAME RPAREN .)
+    $end            reduce using rule 13 (funcapp -> NAME LPAREN NAME RPAREN .)
+
+
+state 28
+
+    (11) condition -> WHERE expression .
+    (15) expression -> expression . AND expression
+    (16) expression -> expression . OR expression
+    (17) expression -> expression . EQUALS expression
+
+    LIMIT           reduce using rule 11 (condition -> WHERE expression .)
+    ORDER           reduce using rule 11 (condition -> WHERE expression .)
+    $end            reduce using rule 11 (condition -> WHERE expression .)
+    AND             shift and go to state 33
+    OR              shift and go to state 34
+    EQUALS          shift and go to state 35
+
+
+state 29
+
+    (14) expression -> value .
+
+    AND             reduce using rule 14 (expression -> value .)
+    OR              reduce using rule 14 (expression -> value .)
+    EQUALS          reduce using rule 14 (expression -> value .)
+    LIMIT           reduce using rule 14 (expression -> value .)
+    ORDER           reduce using rule 14 (expression -> value .)
+    $end            reduce using rule 14 (expression -> value .)
+
+
+state 30
+
+    (18) value -> NUMBER .
+
+    AND             reduce using rule 18 (value -> NUMBER .)
+    OR              reduce using rule 18 (value -> NUMBER .)
+    EQUALS          reduce using rule 18 (value -> NUMBER .)
+    LIMIT           reduce using rule 18 (value -> NUMBER .)
+    ORDER           reduce using rule 18 (value -> NUMBER .)
+    $end            reduce using rule 18 (value -> NUMBER .)
+
+
+state 31
+
+    (19) value -> STRING .
+
+    AND             reduce using rule 19 (value -> STRING .)
+    OR              reduce using rule 19 (value -> STRING .)
+    EQUALS          reduce using rule 19 (value -> STRING .)
+    LIMIT           reduce using rule 19 (value -> STRING .)
+    ORDER           reduce using rule 19 (value -> STRING .)
+    $end            reduce using rule 19 (value -> STRING .)
+
+
+state 32
+
+    (20) value -> NAME .
+
+    AND             reduce using rule 20 (value -> NAME .)
+    OR              reduce using rule 20 (value -> NAME .)
+    EQUALS          reduce using rule 20 (value -> NAME .)
+    LIMIT           reduce using rule 20 (value -> NAME .)
+    ORDER           reduce using rule 20 (value -> NAME .)
+    $end            reduce using rule 20 (value -> NAME .)
+
+
+state 33
+
+    (15) expression -> expression AND . expression
+    (14) expression -> . value
+    (15) expression -> . expression AND expression
+    (16) expression -> . expression OR expression
+    (17) expression -> . expression EQUALS expression
+    (18) value -> . NUMBER
+    (19) value -> . STRING
+    (20) value -> . NAME
+
+    NUMBER          shift and go to state 30
+    STRING          shift and go to state 31
+    NAME            shift and go to state 32
+
+    expression                     shift and go to state 36
+    value                          shift and go to state 29
+
+state 34
+
+    (16) expression -> expression OR . expression
+    (14) expression -> . value
+    (15) expression -> . expression AND expression
+    (16) expression -> . expression OR expression
+    (17) expression -> . expression EQUALS expression
+    (18) value -> . NUMBER
+    (19) value -> . STRING
+    (20) value -> . NAME
+
+    NUMBER          shift and go to state 30
+    STRING          shift and go to state 31
+    NAME            shift and go to state 32
+
+    expression                     shift and go to state 37
+    value                          shift and go to state 29
+
+state 35
+
+    (17) expression -> expression EQUALS . expression
+    (14) expression -> . value
+    (15) expression -> . expression AND expression
+    (16) expression -> . expression OR expression
+    (17) expression -> . expression EQUALS expression
+    (18) value -> . NUMBER
+    (19) value -> . STRING
+    (20) value -> . NAME
+
+    NUMBER          shift and go to state 30
+    STRING          shift and go to state 31
+    NAME            shift and go to state 32
+
+    expression                     shift and go to state 38
+    value                          shift and go to state 29
+
+state 36
+
+    (15) expression -> expression AND expression .
+    (15) expression -> expression . AND expression
+    (16) expression -> expression . OR expression
+    (17) expression -> expression . EQUALS expression
+
+    AND             reduce using rule 15 (expression -> expression AND expression .)
+    OR              reduce using rule 15 (expression -> expression AND expression .)
+    LIMIT           reduce using rule 15 (expression -> expression AND expression .)
+    ORDER           reduce using rule 15 (expression -> expression AND expression .)
+    $end            reduce using rule 15 (expression -> expression AND expression .)
+    EQUALS          shift and go to state 35
+
+  ! EQUALS          [ reduce using rule 15 (expression -> expression AND expression .) ]
+  ! AND             [ shift and go to state 33 ]
+  ! OR              [ shift and go to state 34 ]
+
+
+state 37
+
+    (16) expression -> expression OR expression .
+    (15) expression -> expression . AND expression
+    (16) expression -> expression . OR expression
+    (17) expression -> expression . EQUALS expression
+
+    OR              reduce using rule 16 (expression -> expression OR expression .)
+    LIMIT           reduce using rule 16 (expression -> expression OR expression .)
+    ORDER           reduce using rule 16 (expression -> expression OR expression .)
+    $end            reduce using rule 16 (expression -> expression OR expression .)
+    AND             shift and go to state 33
+    EQUALS          shift and go to state 35
+
+  ! AND             [ reduce using rule 16 (expression -> expression OR expression .) ]
+  ! EQUALS          [ reduce using rule 16 (expression -> expression OR expression .) ]
+  ! OR              [ shift and go to state 34 ]
+
+
+state 38
+
+    (17) expression -> expression EQUALS expression .
+    (15) expression -> expression . AND expression
+    (16) expression -> expression . OR expression
+    (17) expression -> expression . EQUALS expression
+
+    AND             reduce using rule 17 (expression -> expression EQUALS expression .)
+    OR              reduce using rule 17 (expression -> expression EQUALS expression .)
+    EQUALS          reduce using rule 17 (expression -> expression EQUALS expression .)
+    LIMIT           reduce using rule 17 (expression -> expression EQUALS expression .)
+    ORDER           reduce using rule 17 (expression -> expression EQUALS expression .)
+    $end            reduce using rule 17 (expression -> expression EQUALS expression .)
+
+  ! AND             [ shift and go to state 33 ]
+  ! OR              [ shift and go to state 34 ]
+  ! EQUALS          [ shift and go to state 35 ]
+

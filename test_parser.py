@@ -1,6 +1,6 @@
 import pytest
 
-from sql import yacc
+from sql_mojo_parser import yacc
 
 @pytest.mark.parametrize(
     "string,result",

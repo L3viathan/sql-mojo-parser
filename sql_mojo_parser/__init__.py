@@ -167,9 +167,6 @@ def p_value(p):
     }
 
 def p_error(p):
-    print("Error:", p)
-    raise RuntimeError
+    raise SyntaxError("Invalid mojo-sql statement")
 
 yacc.yacc(start="statement")
-pprint(yacc.parse("SELECT * FROM bar WHERE a=3 AND b=4 OR c=5 AND d=2 LIMIT 10 ORDER BY bar"))
-# pprint(yacc.parse("SELECT foo, bar, bat FROM bar WHERE a=3 AND b=4 OR c=5 AND d=2 LIMIT 10 ORDER BY bar"))
