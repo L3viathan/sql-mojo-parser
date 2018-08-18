@@ -1,6 +1,8 @@
 import ply.lex as lex
 import ply.yacc as yacc
 
+from pprint import pprint
+
 reserved = [
     'SELECT', 'FROM', 'WHERE', 'LIMIT', 'AND', 'OR', 'ORDER', 'BY',
 ]
@@ -61,7 +63,7 @@ def p_empty(p):
 
 def p_statement_select(p):
     'statement : select postpositions'
-    p[0] = ("select", p[1], p[2])
+    p[0] = {**p[1], **p[2]}
 
 def p_postpositions(p):
     '''
@@ -88,7 +90,13 @@ def p_postpositions(p):
 
 def p_select(p):
     'select : SELECT colspec FROM NAME condition'
-    p[0] = (p[2], p[4], p[5])
+    p[0] = {
+        "type": "select",
+        "columns": p[2],
+        "index": p[4],
+    }
+    if p[5]:
+        p[0]["condition"] = p[5]
 
 def p_colspec(p):
     '''
@@ -97,12 +105,20 @@ def p_colspec(p):
             | funcapp colspec
             | empty
     '''
-    if len(p) < 3:
-        p[0] = p[1]
-    elif p[2]:
+    if p[1] == "*":
+        p[0] = [{"type": "star"}]
+    elif isinstance(p[1], dict) and p[1].get("type") == "func_appl":
         p[0] = [p[1], *p[2]]
+    elif p[1]:
+        p[0] = [
+            {
+                "type": "name",
+                "value": p[1],
+            },
+            *p[2],
+        ]
     else:
-        p[0] = [p[1]]
+        p[0] = []
 
 def p_condition(p):
     '''
@@ -116,7 +132,13 @@ def p_condition(p):
 
 def p_funcapp(p):
     'funcapp : NAME LPAREN NAME RPAREN'
-    p[0] = (p[1], p[3])
+    p[0] = {
+        "type": "func_appl",
+        "value": {
+            "name": p[1],
+            "args": p[3],
+        },
+    }
 
 def p_expression(p):
     '''
@@ -128,7 +150,10 @@ def p_expression(p):
     if len(p) < 3:
         p[0] = p[1]
     else:
-        p[0] = (p[2], p[1], p[3])
+        p[0] = {
+            "op": p[2].lower(),
+            "args": [p[1], p[3]],
+        }
 
 def p_value(p):
     '''
@@ -136,11 +161,15 @@ def p_value(p):
           | STRING
           | NAME
     '''
-    p[0] = p[1]
+    p[0] = {
+        "type": "name" if p.slice[1].type == "NAME" else "literal",
+        "value": p[1],
+    }
 
 def p_error(p):
     print("Error:", p)
     raise RuntimeError
 
 yacc.yacc(start="statement")
-print(yacc.parse("SELECT foo FROM bar WHERE a=3 AND b=4 OR c=5 AND d=2 LIMIT 10 ORDER BY bar"))
+pprint(yacc.parse("SELECT * FROM bar WHERE a=3 AND b=4 OR c=5 AND d=2 LIMIT 10 ORDER BY bar"))
+# pprint(yacc.parse("SELECT foo, bar, bat FROM bar WHERE a=3 AND b=4 OR c=5 AND d=2 LIMIT 10 ORDER BY bar"))

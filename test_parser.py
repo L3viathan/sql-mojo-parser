@@ -85,8 +85,8 @@ from sql import yacc
                         {
                             "op": "=",
                             "args": [
-                                {"type": "name", "value": "a"},
-                                {"type": "literal", "value": 3},
+                                {"type": "name", "value": "b"},
+                                {"type": "literal", "value": 2},
                             ],
                         },
                     ]
@@ -96,9 +96,7 @@ from sql import yacc
     ]
 )
 def test_parse_success(string, result):
-    # assert parser.parse(string) == result
-    # DEBUG: For now just assertion of non-fail
-    yacc.parse(string)
+    assert yacc.parse(string) == result
 
 
 @pytest.mark.parametrize(
