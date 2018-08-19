@@ -10,10 +10,11 @@ reserved = [
 tokens = (
     *reserved,
     'NAME', 'NUMBER', 'STRING',
-    'EQUALS', 'LPAREN', 'RPAREN', 'STAR'
+    'EQUALS', 'LPAREN', 'RPAREN', 'STAR', 'COMMA'
 )
 
 t_STAR = r'\*'
+t_COMMA = r','
 
 def t_NAME(t):
     r'[A-Za-z_][A-Za-z0-9_]*'
@@ -89,7 +90,7 @@ def p_postpositions(p):
         p[0] = {}
 
 def p_select(p):
-    'select : SELECT colspec FROM NAME condition'
+    'select : SELECT colspec FROM value condition'
     p[0] = {
         "type": "select",
         "columns": p[2],
@@ -101,21 +102,23 @@ def p_select(p):
 def p_colspec(p):
     '''
     colspec : STAR
-            | NAME colspec
-            | funcapp colspec
-            | empty
+            | NAME
+            | funcapp
+            | NAME COMMA colspec
+            | funcapp COMMA colspec
     '''
+    rest = p[3] if len(p) > 3 else []
     if p[1] == "*":
         p[0] = [{"type": "star"}]
     elif isinstance(p[1], dict) and p[1].get("type") == "func_appl":
-        p[0] = [p[1], *p[2]]
+        p[0] = [p[1], *rest]
     elif p[1]:
         p[0] = [
             {
                 "type": "name",
                 "value": p[1],
             },
-            *p[2],
+            *rest,
         ]
     else:
         p[0] = []
@@ -131,12 +134,12 @@ def p_condition(p):
         p[0] = None
 
 def p_funcapp(p):
-    'funcapp : NAME LPAREN NAME RPAREN'
+    'funcapp : NAME LPAREN value RPAREN'
     p[0] = {
         "type": "func_appl",
         "value": {
             "name": p[1],
-            "args": p[3],
+            "arg": p[3],
         },
     }
 

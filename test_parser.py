@@ -12,7 +12,7 @@ from sql_mojo_parser import yacc
                 "columns": [
                     {"type": "name", "value": "foo"},
                 ],
-                "index": "bar",
+                "index": {"type": "name", "value": "bar"},
             }
         ),
         (
@@ -22,7 +22,7 @@ from sql_mojo_parser import yacc
                 "columns": [
                     {"type": "star"},
                 ],
-                "index": "bar",
+                "index": {"type": "name", "value": "bar"},
             }
         ),
         (
@@ -33,7 +33,7 @@ from sql_mojo_parser import yacc
                     {"type": "name", "value": "foo"},
                     {"type": "name", "value": "bar"},
                 ],
-                "index": "bar",
+                "index": {"type": "name", "value": "bar"},
             }
         ),
         (
@@ -43,7 +43,7 @@ from sql_mojo_parser import yacc
                 "columns": [
                     {"type": "star"},
                 ],
-                "index": "bar",
+                "index": {"type": "name", "value": "bar"},
                 "limit": 10,
             }
         ),
@@ -54,7 +54,7 @@ from sql_mojo_parser import yacc
                 "columns": [
                     {"type": "star"},
                 ],
-                "index": "bar",
+                "index": {"type": "name", "value": "bar"},
                 "condition": {
                     "op": "=",
                     "args": [
@@ -71,7 +71,7 @@ from sql_mojo_parser import yacc
                 "columns": [
                     {"type": "star"},
                 ],
-                "index": "bar",
+                "index": {"type": "name", "value": "bar"},
                 "condition": {
                     "op": "and",
                     "args": [

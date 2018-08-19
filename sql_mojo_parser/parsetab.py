@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'statementleftORleftANDleftEQUALSAND BY EQUALS FROM LIMIT LPAREN NAME NUMBER OR ORDER RPAREN SELECT STAR STRING WHEREempty :statement : select postpositions\n    postpositions : LIMIT NUMBER postpositions\n                  | ORDER BY colspec postpositions\n                  | empty\n    select : SELECT colspec FROM NAME condition\n    colspec : STAR\n            | NAME colspec\n            | funcapp colspec\n            | empty\n    \n    condition : WHERE expression\n              | empty\n    funcapp : NAME LPAREN NAME RPAREN\n    expression : value\n               | expression AND expression\n               | expression OR expression\n               | expression EQUALS expression\n    \n    value : NUMBER\n          | STRING\n          | NAME\n    '
+_lr_signature = 'statementleftORleftANDleftEQUALSAND BY COMMA EQUALS FROM LIMIT LPAREN NAME NUMBER OR ORDER RPAREN SELECT STAR STRING WHEREempty :statement : select postpositions\n    postpositions : LIMIT NUMBER postpositions\n                  | ORDER BY colspec postpositions\n                  | empty\n    select : SELECT colspec FROM value condition\n    colspec : STAR\n            | NAME\n            | funcapp\n            | NAME COMMA colspec\n            | funcapp COMMA colspec\n    \n    condition : WHERE expression\n              | empty\n    funcapp : NAME LPAREN colspec RPAREN\n    expression : value\n               | expression AND expression\n               | expression OR expression\n               | expression EQUALS expression\n    \n    value : NUMBER\n          | STRING\n          | NAME\n    '
     
-_lr_action_items = {'SELECT':([0,],[3,]),'$end':([1,2,4,7,9,10,11,12,13,14,16,18,19,20,21,23,24,26,27,28,29,30,31,32,36,37,38,],[0,-1,-2,-5,-1,-7,-1,-10,-1,-1,-8,-9,-3,-1,-1,-4,-6,-12,-13,-11,-14,-18,-19,-20,-15,-16,-17,]),'LIMIT':([2,9,10,11,12,13,14,16,18,20,21,24,26,27,28,29,30,31,32,36,37,38,],[5,-1,-7,-1,-10,5,-1,-8,-9,5,-1,-6,-12,-13,-11,-14,-18,-19,-20,-15,-16,-17,]),'ORDER':([2,9,10,11,12,13,14,16,18,20,21,24,26,27,28,29,30,31,32,36,37,38,],[6,-1,-7,-1,-10,6,-1,-8,-9,6,-1,-6,-12,-13,-11,-14,-18,-19,-20,-15,-16,-17,]),'STAR':([3,9,11,14,27,],[10,10,10,10,-13,]),'NAME':([3,9,11,14,15,17,25,27,33,34,35,],[9,9,9,9,21,22,32,-13,32,32,32,]),'FROM':([3,8,9,10,11,12,16,18,27,],[-1,15,-1,-7,-1,-10,-8,-9,-13,]),'NUMBER':([5,25,33,34,35,],[13,30,30,30,30,]),'BY':([6,],[14,]),'LPAREN':([9,],[17,]),'WHERE':([21,],[25,]),'RPAREN':([22,],[27,]),'STRING':([25,33,34,35,],[31,31,31,31,]),'AND':([28,29,30,31,32,36,37,38,],[33,-14,-18,-19,-20,-15,33,-17,]),'OR':([28,29,30,31,32,36,37,38,],[34,-14,-18,-19,-20,-15,-16,-17,]),'EQUALS':([28,29,30,31,32,36,37,38,],[35,-14,-18,-19,-20,35,35,-17,]),}
+_lr_action_items = {'SELECT':([0,],[3,]),'$end':([1,2,4,7,9,10,11,12,18,19,20,21,22,23,24,26,27,28,30,31,32,33,37,38,39,],[0,-1,-2,-5,-7,-8,-9,-1,-3,-1,-1,-19,-20,-21,-10,-11,-4,-6,-13,-14,-12,-15,-16,-17,-18,]),'LIMIT':([2,9,10,11,12,19,20,21,22,23,24,26,28,30,31,32,33,37,38,39,],[5,-7,-8,-9,5,5,-1,-19,-20,-21,-10,-11,-6,-13,-14,-12,-15,-16,-17,-18,]),'ORDER':([2,9,10,11,12,19,20,21,22,23,24,26,28,30,31,32,33,37,38,39,],[6,-7,-8,-9,6,6,-1,-19,-20,-21,-10,-11,-6,-13,-14,-12,-15,-16,-17,-18,]),'STAR':([3,13,15,16,17,],[9,9,9,9,9,]),'NAME':([3,13,14,15,16,17,29,34,35,36,],[10,10,23,10,10,10,23,23,23,23,]),'NUMBER':([5,14,29,34,35,36,],[12,21,21,21,21,21,]),'BY':([6,],[13,]),'FROM':([8,9,10,11,24,26,31,],[14,-7,-8,-9,-10,-11,-14,]),'RPAREN':([9,10,11,24,25,26,31,],[-7,-8,-9,-10,31,-11,-14,]),'COMMA':([10,11,31,],[15,17,-14,]),'LPAREN':([10,],[16,]),'STRING':([14,29,34,35,36,],[22,22,22,22,22,]),'WHERE':([20,21,22,23,],[29,-19,-20,-21,]),'AND':([21,22,23,32,33,37,38,39,],[-19,-20,-21,34,-15,-16,34,-18,]),'OR':([21,22,23,32,33,37,38,39,],[-19,-20,-21,35,-15,-16,-17,-18,]),'EQUALS':([21,22,23,32,33,37,38,39,],[-19,-20,-21,36,-15,36,36,-18,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'statement':([0,],[1,]),'select':([0,],[2,]),'postpositions':([2,13,20,],[4,19,23,]),'empty':([2,3,9,11,13,14,20,21,],[7,12,12,12,7,12,7,26,]),'colspec':([3,9,11,14,],[8,16,18,20,]),'funcapp':([3,9,11,14,],[11,11,11,11,]),'condition':([21,],[24,]),'expression':([25,33,34,35,],[28,36,37,38,]),'value':([25,33,34,35,],[29,29,29,29,]),}
+_lr_goto_items = {'statement':([0,],[1,]),'select':([0,],[2,]),'postpositions':([2,12,19,],[4,18,27,]),'empty':([2,12,19,20,],[7,7,7,30,]),'colspec':([3,13,15,16,17,],[8,19,24,25,26,]),'funcapp':([3,13,15,16,17,],[11,11,11,11,11,]),'value':([14,29,34,35,36,],[20,33,33,33,33,]),'condition':([20,],[28,]),'expression':([29,34,35,36,],[32,37,38,39,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -27,24 +27,25 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> statement","S'",1,None,None,None),
-  ('empty -> <empty>','empty',0,'p_empty','__init__.py',61),
-  ('statement -> select postpositions','statement',2,'p_statement_select','__init__.py',65),
-  ('postpositions -> LIMIT NUMBER postpositions','postpositions',3,'p_postpositions','__init__.py',70),
-  ('postpositions -> ORDER BY colspec postpositions','postpositions',4,'p_postpositions','__init__.py',71),
-  ('postpositions -> empty','postpositions',1,'p_postpositions','__init__.py',72),
-  ('select -> SELECT colspec FROM NAME condition','select',5,'p_select','__init__.py',92),
-  ('colspec -> STAR','colspec',1,'p_colspec','__init__.py',103),
-  ('colspec -> NAME colspec','colspec',2,'p_colspec','__init__.py',104),
-  ('colspec -> funcapp colspec','colspec',2,'p_colspec','__init__.py',105),
-  ('colspec -> empty','colspec',1,'p_colspec','__init__.py',106),
-  ('condition -> WHERE expression','condition',2,'p_condition','__init__.py',125),
-  ('condition -> empty','condition',1,'p_condition','__init__.py',126),
-  ('funcapp -> NAME LPAREN NAME RPAREN','funcapp',4,'p_funcapp','__init__.py',134),
-  ('expression -> value','expression',1,'p_expression','__init__.py',145),
-  ('expression -> expression AND expression','expression',3,'p_expression','__init__.py',146),
-  ('expression -> expression OR expression','expression',3,'p_expression','__init__.py',147),
-  ('expression -> expression EQUALS expression','expression',3,'p_expression','__init__.py',148),
-  ('value -> NUMBER','value',1,'p_value','__init__.py',160),
-  ('value -> STRING','value',1,'p_value','__init__.py',161),
-  ('value -> NAME','value',1,'p_value','__init__.py',162),
+  ('empty -> <empty>','empty',0,'p_empty','__init__.py',62),
+  ('statement -> select postpositions','statement',2,'p_statement_select','__init__.py',66),
+  ('postpositions -> LIMIT NUMBER postpositions','postpositions',3,'p_postpositions','__init__.py',71),
+  ('postpositions -> ORDER BY colspec postpositions','postpositions',4,'p_postpositions','__init__.py',72),
+  ('postpositions -> empty','postpositions',1,'p_postpositions','__init__.py',73),
+  ('select -> SELECT colspec FROM value condition','select',5,'p_select','__init__.py',93),
+  ('colspec -> STAR','colspec',1,'p_colspec','__init__.py',104),
+  ('colspec -> NAME','colspec',1,'p_colspec','__init__.py',105),
+  ('colspec -> funcapp','colspec',1,'p_colspec','__init__.py',106),
+  ('colspec -> NAME COMMA colspec','colspec',3,'p_colspec','__init__.py',107),
+  ('colspec -> funcapp COMMA colspec','colspec',3,'p_colspec','__init__.py',108),
+  ('condition -> WHERE expression','condition',2,'p_condition','__init__.py',128),
+  ('condition -> empty','condition',1,'p_condition','__init__.py',129),
+  ('funcapp -> NAME LPAREN colspec RPAREN','funcapp',4,'p_funcapp','__init__.py',137),
+  ('expression -> value','expression',1,'p_expression','__init__.py',148),
+  ('expression -> expression AND expression','expression',3,'p_expression','__init__.py',149),
+  ('expression -> expression OR expression','expression',3,'p_expression','__init__.py',150),
+  ('expression -> expression EQUALS expression','expression',3,'p_expression','__init__.py',151),
+  ('value -> NUMBER','value',1,'p_value','__init__.py',163),
+  ('value -> STRING','value',1,'p_value','__init__.py',164),
+  ('value -> NAME','value',1,'p_value','__init__.py',165),
 ]
