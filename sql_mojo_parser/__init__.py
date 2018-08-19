@@ -32,7 +32,7 @@ def t_NUMBER(t):
 
 def t_STRING(t):
     r"'([^'\\]+|\\'|\\\\)*'"
-    t.value = t.value.replace(r'\\', chr(92)).replace(r"\'", r"'")
+    t.value = t.value.replace(r'\\', chr(92)).replace(r"\'", r"'")[1:-1]
     return t
 
 t_EQUALS = r'='
