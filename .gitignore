@@ -1,0 +1,7 @@
+sql_mojo_parser/parser.out
+sql_mojo_parser/parsetab.py
+*.pyc
+build/
+dist/
+*.egg-info/
+.pytest_cache
