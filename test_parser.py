@@ -93,6 +93,88 @@ from sql_mojo_parser import yacc
                 }
             }
         ),
+        (
+            "select * from bar where a=3 and (b=2 or c=1)",
+            {
+                "type": "select",
+                "columns": [
+                    {"type": "star"},
+                ],
+                "index": {"type": "name", "value": "bar"},
+                "condition": {
+                    "op": "and",
+                    "args": [
+                        {
+                            "op": "=",
+                            "args": [
+                                {"type": "name", "value": "a"},
+                                {"type": "literal", "value": 3},
+                            ],
+                        },
+                        {
+                            "op": "or",
+                            "args": [
+                                {
+                                    "op": "=",
+                                    "args": [
+                                        {"type": "name", "value": "b"},
+                                        {"type": "literal", "value": 2},
+                                    ],
+                                },
+                                {
+                                    "op": "=",
+                                    "args": [
+                                        {"type": "name", "value": "c"},
+                                        {"type": "literal", "value": 1},
+                                    ],
+                                },
+                            ],
+                        },
+                    ],
+                },
+            },
+        ),
+        (
+            "select * from bar where a=3 and b=2 or c=1",
+            {
+                "type": "select",
+                "columns": [
+                    {"type": "star"},
+                ],
+                "index": {"type": "name", "value": "bar"},
+                "condition": {
+                    "op": "or",
+                    "args": [
+                        {
+                            "op": "and",
+                            "args": [
+                                {
+                                    "op": "=",
+                                    "args": [
+                                        {"type": "name", "value": "a"},
+                                        {"type": "literal", "value": 3},
+                                    ],
+                                },
+                                {
+                                    "op": "=",
+                                    "args": [
+                                        {"type": "name", "value": "b"},
+                                        {"type": "literal", "value": 2},
+                                    ],
+                                },
+                            ],
+                        },
+                        {
+                            "op": "=",
+                            "args": [
+                                {"type": "name", "value": "c"},
+                                {"type": "literal", "value": 1},
+                            ],
+                        },
+                    ],
+                },
+            },
+        ),
     ]
 )
 def test_parse_success(string, result):

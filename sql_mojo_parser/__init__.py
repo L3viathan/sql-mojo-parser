@@ -149,9 +149,12 @@ def p_expression(p):
                | expression AND expression
                | expression OR expression
                | expression EQUALS expression
+               | LPAREN expression RPAREN
     '''
     if len(p) < 3:
         p[0] = p[1]
+    elif p[1] == "(":
+        p[0] = p[2]
     else:
         p[0] = {
             "op": p[2].lower(),
