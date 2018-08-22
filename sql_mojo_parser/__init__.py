@@ -4,7 +4,7 @@ import ply.yacc as yacc
 from pprint import pprint
 
 reserved = [
-    'SELECT', 'FROM', 'WHERE', 'LIMIT', 'AND', 'OR', 'ORDER', 'BY',
+    'SELECT', 'FROM', 'WHERE', 'LIMIT', 'AND', 'OR', 'ORDER', 'BY', 'NOT'
 ]
 
 tokens = (
@@ -55,6 +55,7 @@ lex.lex()
 precedence = (
     ('left', 'OR'),
     ('left', 'AND'),
+    ('left', 'NOT'),
     ('left', 'EQUALS'),
 )
 
@@ -94,7 +95,7 @@ def p_select(p):
     p[0] = {
         "type": "select",
         "columns": p[2],
-        "index": p[4],
+        "table": p[4],
     }
     if p[5]:
         p[0]["condition"] = p[5]
@@ -103,14 +104,14 @@ def p_colspec(p):
     '''
     colspec : STAR
             | NAME
-            | funcapp
+            | function
             | NAME COMMA colspec
-            | funcapp COMMA colspec
+            | function COMMA colspec
     '''
     rest = p[3] if len(p) > 3 else []
     if p[1] == "*":
         p[0] = [{"type": "star"}]
-    elif isinstance(p[1], dict) and p[1].get("type") == "func_appl":
+    elif isinstance(p[1], dict) and p[1].get("type") == "function":
         p[0] = [p[1], *rest]
     elif p[1]:
         p[0] = [
@@ -133,10 +134,10 @@ def p_condition(p):
     else:
         p[0] = None
 
-def p_funcapp(p):
-    'funcapp : NAME LPAREN value RPAREN'
+def p_function(p):
+    'function : NAME LPAREN value RPAREN'
     p[0] = {
-        "type": "func_appl",
+        "type": "function",
         "value": {
             "name": p[1],
             "arg": p[3],
@@ -149,10 +150,16 @@ def p_expression(p):
                | expression AND expression
                | expression OR expression
                | expression EQUALS expression
+               | NOT expression
                | LPAREN expression RPAREN
     '''
     if len(p) < 3:
         p[0] = p[1]
+    elif len(p) == 3:  # not
+        p[0] = {
+            "op": "not",
+            "args": [p[2]],
+        }
     elif p[1] == "(":
         p[0] = p[2]
     else:

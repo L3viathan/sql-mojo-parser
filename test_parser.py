@@ -12,7 +12,7 @@ from sql_mojo_parser import yacc
                 "columns": [
                     {"type": "name", "value": "foo"},
                 ],
-                "index": {"type": "name", "value": "bar"},
+                "table": {"type": "name", "value": "bar"},
             }
         ),
         (
@@ -22,7 +22,7 @@ from sql_mojo_parser import yacc
                 "columns": [
                     {"type": "star"},
                 ],
-                "index": {"type": "name", "value": "bar"},
+                "table": {"type": "name", "value": "bar"},
             }
         ),
         (
@@ -33,7 +33,7 @@ from sql_mojo_parser import yacc
                     {"type": "name", "value": "foo"},
                     {"type": "name", "value": "bar"},
                 ],
-                "index": {"type": "name", "value": "bar"},
+                "table": {"type": "name", "value": "bar"},
             }
         ),
         (
@@ -43,7 +43,7 @@ from sql_mojo_parser import yacc
                 "columns": [
                     {"type": "star"},
                 ],
-                "index": {"type": "name", "value": "bar"},
+                "table": {"type": "name", "value": "bar"},
                 "limit": 10,
             }
         ),
@@ -54,7 +54,7 @@ from sql_mojo_parser import yacc
                 "columns": [
                     {"type": "star"},
                 ],
-                "index": {"type": "name", "value": "bar"},
+                "table": {"type": "name", "value": "bar"},
                 "condition": {
                     "op": "=",
                     "args": [
@@ -65,13 +65,35 @@ from sql_mojo_parser import yacc
             }
         ),
         (
+            "select * from bar where not a=3",
+            {
+                "type": "select",
+                "columns": [
+                    {"type": "star"},
+                ],
+                "table": {"type": "name", "value": "bar"},
+                "condition": {
+                    "op": "not",
+                    "args": [
+                        {
+                            "op": "=",
+                            "args": [
+                                {"type": "name", "value": "a"},
+                                {"type": "literal", "value": 3},
+                            ],
+                        },
+                    ]
+                }
+            }
+        ),
+        (
             "select * from bar where a=3 and b=2",
             {
                 "type": "select",
                 "columns": [
                     {"type": "star"},
                 ],
-                "index": {"type": "name", "value": "bar"},
+                "table": {"type": "name", "value": "bar"},
                 "condition": {
                     "op": "and",
                     "args": [
@@ -100,7 +122,7 @@ from sql_mojo_parser import yacc
                 "columns": [
                     {"type": "star"},
                 ],
-                "index": {"type": "name", "value": "bar"},
+                "table": {"type": "name", "value": "bar"},
                 "condition": {
                     "op": "and",
                     "args": [
@@ -141,7 +163,7 @@ from sql_mojo_parser import yacc
                 "columns": [
                     {"type": "star"},
                 ],
-                "index": {"type": "name", "value": "bar"},
+                "table": {"type": "name", "value": "bar"},
                 "condition": {
                     "op": "or",
                     "args": [
